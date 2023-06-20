@@ -1,0 +1,5 @@
+# Python Byte-compiled files
+__pycache__/
+
+# Vim and emacs temporary files
+*~
