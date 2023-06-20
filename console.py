@@ -135,35 +135,32 @@ class HBNBCommand(cmd.Cmd):
                 break   # Skip invalid parameters (not equals-separated)
             name = params[:name_e]
             params = params[name_e + 1:]
-            if params[0] == '"':
-                params = params[1:]
-                value = None
-                value_e = 0
-                while True:
-                    value_e += (params[value_e:]).find('"')
-                    if value_e == -1:
-                        break   # Invalid, does not close
-                    if value_e != 0 and params[value_e - 1] == '\\':
-                        params = params[:value_e - 1] + params[value_e:]
-                        continue    # Escaped, keep searching
-                    if value_e == len(params) - 1:
-                        value = params[:value_e]
-                        params = ''
-                        break
-                    if params[value_e + 1] == " ":
-                        value = params[:value_e]
-                        params = params[value_e + 2:]
-                        break
-                if value is None:
-                    break
+            value_e = params.find(' ')
+            if value_e == -1:
+                value = params[:]
+                params = ''
             else:
-                value_e = params.find(' ')
-                if value_e == -1:
-                    value = params[:]
-                    params = ''
-                else:
-                    value = params[:value_e]
-                    params = params[value_e + 1:]
+                value = params[:value_e]
+                params = params[value_e + 1:]
+            if value[0] == '"' and value[-1] == '"':
+                # For strings
+                value = value[1:-1]     # Remove the quotes
+                value = value.replace('_', ' ') # Replace underscores with spaces
+                good_val = True
+                quote = 0
+                while good_val:
+                    temp = value[quote:].find('"')
+                    if temp == -1:
+                        break
+                    quote += temp
+                    if (quote != 0) and (value[quote - 1] == '\\'):
+                        value = value[:(quote - 1)] + value[quote:]
+                    else:
+                        good_val = False
+                if not good_val:
+                    continue
+            else:
+                # For numbers
                 try:
                     if value.find(".") != -1:
                         value = float(value)
