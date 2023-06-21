@@ -1,11 +1,43 @@
 #!/usr/bin/python3
 """This module defines a class User"""
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+
+from models import storage_t
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user by various attributes"""
-    email = ''
-    password = ''
-    first_name = ''
-    last_name = ''
+    if storage_t == "db":
+        __tablename__ = 'users'
+        email = Column(String(128), nullable=False)
+        password = Column(String(128), nullable=False)
+        first_name = Column(String(128), nullable=True)
+        last_name = Column(String(128), nullable=True)
+        places = relationship(
+            "Place",
+            backref="user",
+            cascade="all, delete"
+        )
+    else:
+        email = ''
+        password = ''
+        first_name = ''
+        last_name = ''
+
+        @property
+        def places(self):
+            """Getter for list of place instances of the user"""
+            from models import storage
+            from models.place import Place
+            user_places = []
+            all_places = storage.all(Place)
+            for place in all_places.values():
+                if place.user_id == self.id:
+                    user_places.append(place)
+            return user_places
+
+    def __init__(self, *args, **kwargs):
+        """initializes user"""
+        super().__init__(*args, **kwargs)
