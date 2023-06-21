@@ -20,6 +20,11 @@ class User(BaseModel, Base):
             backref="user",
             cascade="all, delete"
         )
+        reviews = relationship(
+            "Review",
+            backref="user",
+            cascade="all, delete"
+        )
     else:
         email = ''
         password = ''
@@ -37,6 +42,18 @@ class User(BaseModel, Base):
                 if place.user_id == self.id:
                     user_places.append(place)
             return user_places
+
+        @property
+        def reviews(self):
+            """Getter for list of review instances of the user"""
+            from models import storage
+            from models.review import Review
+            user_reviews = []
+            all_reviews = storage.all(Review)
+            for review in all_reviews.values():
+                if review.user_id == self.id:
+                    user_reviews.append(review)
+            return user_reviews
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
