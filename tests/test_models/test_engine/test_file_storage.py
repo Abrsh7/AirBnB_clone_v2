@@ -31,18 +31,31 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        new.save()
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is new)
 
+    def test_delete(self):
+        """ object is correctly deleted from storage """
+        new = BaseModel()
+        new.save()
+        for obj in storage.all().values():
+            temp = obj
+        self.assertTrue(temp is new)
+        storage.delete(new)
+        storage.reload()
+        self.assertTrue(len(storage.all()) == 0)
+
     def test_all(self):
         """ __objects is properly returned """
         new = BaseModel()
+        new.save()
         temp = storage.all()
         self.assertIsInstance(temp, dict)
 
     def test_base_model_instantiation(self):
-        """ File is not created on BaseModel save """
+        """ File is not created on BaseModel creation """
         new = BaseModel()
         self.assertFalse(os.path.exists('file.json'))
 
@@ -57,12 +70,14 @@ class test_fileStorage(unittest.TestCase):
     def test_save(self):
         """ FileStorage save method """
         new = BaseModel()
+        new.save()
         storage.save()
         self.assertTrue(os.path.exists('file.json'))
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
+        new.save()
         storage.save()
         storage.reload()
         for obj in storage.all().values():
@@ -97,6 +112,7 @@ class test_fileStorage(unittest.TestCase):
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
+        new.save()
         _id = new.to_dict()['id']
         for key in storage.all().keys():
             temp = key
@@ -105,5 +121,5 @@ class test_fileStorage(unittest.TestCase):
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
+        # print(type(storage))
         self.assertEqual(type(storage), FileStorage)

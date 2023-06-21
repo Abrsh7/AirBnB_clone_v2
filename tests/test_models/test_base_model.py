@@ -56,6 +56,20 @@ class test_basemodel(unittest.TestCase):
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
+    def test_delete(self):
+        """ Testing delete """
+        i = self.value()
+        i.save()
+        key = self.name + "." + i.id
+        with open('file.json', 'r') as f:
+            j = json.load(f)
+            self.assertEqual(j[key], i.to_dict())
+        i.delete()
+        with open('file.json', 'r') as f:
+            j = json.load(f)
+            self.assertFalse(key in j.keys())
+
+
     def test_str(self):
         """ """
         i = self.value()
