@@ -6,19 +6,19 @@ from sqlalchemy.orm import relationship
 
 from models import storage_t
 
+place_amenity = Table('place_amenity', Base.metadata,
+    Column(
+        'place_id', String(60),
+        ForeignKey('places.id'), primary_key=True, nullable=False
+    ),
+    Column(
+        'amenity_id', String(60),
+        ForeignKey('amenities.id'), primary_key=True, nullable=False
+    )
+)
+
 
 if storage_t == "db":
-    place_amenity = Table('place_amenity', Base.metadata,
-        Column(
-            'place_id', String(60),
-            ForeignKey('places.id'), primary_key=True, nullable=False
-        ),
-        Column(
-            'amenity_id', String(60),
-            ForeignKey('amenities.id'), primary_key=True, nullable=False
-        )
-    )
-
     class Place(BaseModel, Base):
         """ A place to stay """
         __tablename__ = 'places'
@@ -50,19 +50,6 @@ if storage_t == "db":
 
 
 else:
-    from sqlalchemy.ext.declarative import declarative_base
-
-    place_amenity = Table('place_amenity', declarative_base().metadata,
-        Column(
-            'place_id', String(60),
-            ForeignKey('places.id'), primary_key=True, nullable=False
-        ),
-        Column(
-            'amenity_id', String(60),
-            ForeignKey('amenities.id'), primary_key=True, nullable=False
-        )
-    )
-
     class Place(BaseModel, Base):
         """ A place to stay """
         city_id = ""
