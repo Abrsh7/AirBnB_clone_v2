@@ -11,7 +11,9 @@ from models import storage_t
 if storage_t == "db":
     Base = declarative_base()
 else:
-    Base = object
+    class Base:
+        """A fake class to give metadata attribute"""
+        metadata = declarative_base().metadata
 
 
 class BaseModel:
