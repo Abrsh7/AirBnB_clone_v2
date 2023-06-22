@@ -40,7 +40,7 @@ class DBStorage:
         Returns a dictionary of models of given class or
          all classes currently in storage
         """
-        classes = [User, Place, State, City, Amenity, Review]
+        classes = [User, State, City, Amenity, Place, Review]
 
         if cls is not None:
             classes = [cls]
