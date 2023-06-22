@@ -7,9 +7,9 @@ from sqlalchemy.orm import relationship
 from models import storage_t
 
 
-class City(BaseModel, Base):
-    """ The city class, contains state ID and name """
-    if storage_t == "db":
+if storage_t == "db":
+    class City(BaseModel, Base):
+        """ The city class, contains state ID and name """
         __tablename__ = 'cities'
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
         name = Column(String(128), nullable=False)
@@ -18,7 +18,15 @@ class City(BaseModel, Base):
             backref="city",
             cascade="all, delete"
         )
-    else:
+
+        def __init__(self, *args, **kwargs):
+            """initializes city"""
+            super().__init__(*args, **kwargs)
+
+
+else:
+    class City(BaseModel):
+        """ The city class, contains state ID and name """
         state_id = ""
         name = ""
 
@@ -33,7 +41,3 @@ class City(BaseModel, Base):
                 if place.city_id == self.id:
                     city_places.append(place)
             return city_places
-
-    def __init__(self, *args, **kwargs):
-        """initializes city"""
-        super().__init__(*args, **kwargs)

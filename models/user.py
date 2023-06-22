@@ -7,9 +7,9 @@ from sqlalchemy.orm import relationship
 from models import storage_t
 
 
-class User(BaseModel, Base):
-    """This class defines a user by various attributes"""
-    if storage_t == "db":
+if storage_t == "db":
+    class User(BaseModel, Base):
+        """This class defines a user by various attributes"""
         __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
@@ -25,7 +25,15 @@ class User(BaseModel, Base):
             backref="user",
             cascade="all, delete"
         )
-    else:
+
+        def __init__(self, *args, **kwargs):
+            """initializes user"""
+            super().__init__(*args, **kwargs)
+
+
+else:
+    class User(BaseModel):
+        """This class defines a user by various attributes"""
         email = ''
         password = ''
         first_name = ''
@@ -54,7 +62,3 @@ class User(BaseModel, Base):
                 if review.user_id == self.id:
                     user_reviews.append(review)
             return user_reviews
-
-    def __init__(self, *args, **kwargs):
-        """initializes user"""
-        super().__init__(*args, **kwargs)

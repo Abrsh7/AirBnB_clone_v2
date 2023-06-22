@@ -18,9 +18,9 @@ place_amenity = Table('place_amenity', Base.metadata,
 )
 
 
-class Place(BaseModel, Base):
-    """ A place to stay """
-    if storage_t == "db":
+if storage_t == "db":
+    class Place(BaseModel, Base):
+        """ A place to stay """
         __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
@@ -43,7 +43,15 @@ class Place(BaseModel, Base):
             backref="place_amenities",
             viewonly=False
         )
-    else:
+
+        def __init__(self, *args, **kwargs):
+            """initializes place"""
+            super().__init__(*args, **kwargs)
+
+
+else:
+    class Place(BaseModel):
+        """ A place to stay """
         city_id = ""
         user_id = ""
         name = ""
