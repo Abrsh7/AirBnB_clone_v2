@@ -234,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            storage.delete(storage.all()[key])
+            storage.all()[key].delete()
             storage.save()
         except KeyError:
             print("** no instance found **")
