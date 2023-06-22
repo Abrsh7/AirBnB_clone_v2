@@ -50,7 +50,7 @@ if storage_t == "db":
 
 
 else:
-    class Place(BaseModel):
+    class Place(BaseModel, object):
         """ A place to stay """
         city_id = ""
         user_id = ""

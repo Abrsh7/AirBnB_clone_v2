@@ -20,7 +20,7 @@ if storage_t == "db":
 
 
 else:
-    class Review(BaseModel):
+    class Review(BaseModel, object):
         """ Review class to store review information """
         place_id = ""
         user_id = ""

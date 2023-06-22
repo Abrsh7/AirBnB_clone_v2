@@ -25,7 +25,7 @@ if storage_t == "db":
 
 
 else:
-    class City(BaseModel):
+    class City(BaseModel, object):
         """ The city class, contains state ID and name """
         state_id = ""
         name = ""

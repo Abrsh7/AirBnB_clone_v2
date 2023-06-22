@@ -32,7 +32,7 @@ if storage_t == "db":
 
 
 else:
-    class User(BaseModel):
+    class User(BaseModel, object):
         """This class defines a user by various attributes"""
         email = ''
         password = ''
