@@ -61,7 +61,9 @@ class DBStorage:
         """Deletes an object from database"""
         if obj is None:
             return
-        self.__session.delete(obj)
+        obj_sess = self.__session.object_session(obj)
+        if obj_sess:
+            obj_sess.delete(obj)
         self.save()
 
     def save(self):
