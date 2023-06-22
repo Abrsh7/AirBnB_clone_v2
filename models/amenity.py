@@ -18,6 +18,6 @@ if storage_t == "db":
 
 
 else:
-    class Amenity(BaseModel):
+    class Amenity(BaseModel, Base):
         """ Amenity class to store amenity information """
         name = ""

@@ -24,7 +24,7 @@ if storage_t == "db":
 
 
 else:
-    class State(BaseModel, object):
+    class State(BaseModel, Base):
         """ State class """
         name = ""
 

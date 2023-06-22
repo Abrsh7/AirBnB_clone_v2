@@ -8,7 +8,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from models import storage_t
 
-Base = declarative_base()
+if storage_t == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
