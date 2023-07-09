@@ -4,12 +4,13 @@ Fabric script that generates a .tgz archive (gzip compression) from the
  contents of the web_static
 """
 from datetime import datetime
-from fabric.api import local
+from fabric.api import local, runs_once
 from fabric.decorators import hosts
 from os.path import isdir
 
 
 @hosts("<local-only>")
+@runs_once
 def do_pack():
     """Packs web_static to versions/web_static_{date}.tgz"""
     try:
