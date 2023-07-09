@@ -12,14 +12,15 @@ sudo ufw allow 'Nginx HTTP'
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 
-# Writing "Hello World!" to test served html
-echo "Hello World!" > /data/web_static/releases/test/index.html
 # Creating a symbolic link to the test folder
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # Changing ownership of the /data folder
-chown -R ubuntu /data/
-chgrp -R ubuntu /data/
+sudo chown -R ubuntu /data/
+sudo chgrp -R ubuntu /data/
+
+# Writing "Hello World!" to test served html
+echo "Hello World!" > /data/web_static/releases/test/index.html
 
 # Setting the nginx configuration to:
 #  1. Create the new error page and setting it as the 404 error page
@@ -27,7 +28,8 @@ chgrp -R ubuntu /data/
 #  3. Add a redirection
 #  4. Add hbnb_static location
 nginx_conf="/etc/nginx/sites-available/default"
-printf "%s\n" "##
+sudo chmod 666 $nginx_conf
+sudo printf "%s\n" "##
 # You should look at the following URL's in order to grasp a solid understanding
 # of Nginx configuration files in order to fully unleash the power of Nginx.
 # https://www.nginx.com/resources/wiki/start/
@@ -129,6 +131,7 @@ server {
 #		try_files \$uri \$uri/ =404;
 #	}
 #}" > $nginx_conf
+sudo chmod 644 $nginx_conf
 
 # To refresh the caches and pick up new changes
 sudo service nginx restart
