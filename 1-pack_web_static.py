@@ -15,7 +15,7 @@ def do_pack():
             local("mkdir versions")
         date = datetime.now().strftime("%Y%m%d%H%M%S")
         file_name = "versions/web_static_{}.tgz".format(date)
-        puts("Packing web_static to {}".format(file_name))
+        # puts("Packing web_static to {}".format(file_name))
         local("tar -cvzf {} web_static".format(file_name))
         return file_name
     except Exception:
